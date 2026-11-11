@@ -14,6 +14,8 @@
 // Techannel Patreon banner for the top of every Civitai card (owner 2026-10-30: "a little banner for the patreon that goes on top of
 // every description", replacing the 🔓 Early access text line; "also write new loras for free 7 days early"; "do not add images from
 // our loras"; v2: "it's kinda confusing and make it more on the red spectrum" → ONE message left, ONE button right, reds only).
+// v3 (owner 2026-11-12: the 7-day free trial is on, "remake the banner how you want"): the offer is the whole early-access set, free for a
+// week; the button starts the trial; the price sits under it.
 // Rendered to PNG by headless Chrome. Civitai shows it ~800 px wide, so text is sized for half scale.
 const W = 1600, H = 400;
 const cv = document.getElementById('c'), g = cv.getContext('2d');
@@ -43,17 +45,17 @@ function message() {
   g.lineWidth = 1.5; g.strokeStyle = 'rgba(255,200,190,0.45)'; g.stroke();
   lock(X + 18, 66, '#ffd2c4'); g.fillStyle = '#ffe3da'; g.fillText(tag, X + 46, 86);
   g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 14; g.shadowOffsetY = 4;
-  g.font = '800 70px Inter'; g.fillStyle = '#ffffff'; g.fillText('New LoRAs for free,', X, 182);
+  g.font = '800 70px Inter'; g.fillStyle = '#ffffff'; g.fillText('All early-access LoRAs', X, 182);
   const warm = g.createLinearGradient(X, 0, X + 470, 0); warm.addColorStop(0, '#ff7a6b'); warm.addColorStop(1, '#ffc58a');
-  g.fillStyle = warm; g.fillText('7 days early', X, 258);
-  g.font = '700 30px "Noto Sans CJK JP"'; g.fillStyle = '#ffd9d0'; g.fillText('新作LoRAを無料で7日早くダウンロード', X, 322);
+  g.fillStyle = warm; g.fillText('free for 7 days', X, 258);
+  g.font = '700 30px "Noto Sans CJK JP"'; g.fillStyle = '#ffd9d0'; g.fillText('早期アクセスのLoRAすべて、7日間無料でお試し', X, 322);
   g.shadowColor = 'transparent';
 }
 
 function action() {
   const cx = 1290;
   g.save();
-  g.font = '800 40px Inter'; const label = 'Join on Patreon', bw = g.measureText(label).width + 160, bx = cx - bw / 2, by = 150;
+  g.font = '800 40px Inter'; const label = 'Start free trial', bw = g.measureText(label).width + 160, bx = cx - bw / 2, by = 150;
   g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 30; g.shadowOffsetY = 10;
   rr(bx, by, bw, 92, 46); g.fillStyle = '#ffffff'; g.fill();
   g.shadowColor = 'transparent';
@@ -61,13 +63,13 @@ function action() {
   g.lineWidth = 5; g.lineCap = 'round'; g.strokeStyle = '#c3172e';             // arrow
   const ax = cx + bw / 2 - 52, ay = by + 46;
   g.beginPath(); g.moveTo(ax - 16, ay); g.lineTo(ax + 12, ay); g.moveTo(ax + 1, ay - 11); g.lineTo(ax + 12, ay); g.lineTo(ax + 1, ay + 11); g.stroke();
-  g.font = '700 26px Inter'; g.fillStyle = '#ffe3da'; g.fillText('$5/month', cx, by + 142);
+  g.font = '700 26px Inter'; g.fillStyle = '#ffe3da'; g.fillText('then €5/month · cancel anytime', cx, by + 142);
   g.font = '600 20px Inter'; g.fillStyle = 'rgba(255,220,210,0.7)'; g.fillText('patreon.com/cw/Techannel', cx, by + 174);
   g.restore();
 }
 
 (async () => {
-  await Promise.all([document.fonts.load('800 70px Inter'), document.fonts.load('600 20px Inter'), document.fonts.load('700 30px "Noto Sans CJK JP"', '新作')]);
+  await Promise.all([document.fonts.load('800 70px Inter'), document.fonts.load('600 20px Inter'), document.fonts.load('700 30px "Noto Sans CJK JP"', '早期')]);
   background(); message(); action();
   document.title = 'READY';
 })();
