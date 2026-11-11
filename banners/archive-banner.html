@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Archive banner</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #1a0508; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1600" height="240"></canvas>
+<script>
+// Techannel archive banner for Civitai cards, under the Patreon one (owner 2026-11-12: "one to put in the civitai descriptions that
+// points to the website in the same style as the patreon one"; "doesn't have to ask for money, just redirect them to the website to
+// see what they're missing by not being a patron, or convert them to discord members with the vote thing"). Same reds, slimmer,
+// ONE message left, ONE button right. Rendered to PNG by headless Chrome; Civitai shows it ~800 px wide.
+const W = 1600, H = 240;
+const cv = document.getElementById('c'), g = cv.getContext('2d');
+const rr = (x, y, w, h, r) => { g.beginPath(); g.roundRect(x, y, w, h, r); };
+
+function background() {
+  const bg = g.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#170407'); bg.addColorStop(0.55, '#3a0910'); bg.addColorStop(1, '#6f101d');
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const glow = (x, y, r, c) => { const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, c); rg.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = rg; g.fillRect(0, 0, W, H); };
+  glow(1290, 120, 380, 'rgba(255,80,80,0.22)');
+  let s = 23; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 26; i++) { g.fillStyle = `rgba(255,220,210,${0.12 + rnd() * 0.3})`; g.beginPath(); g.arc(rnd() * W, rnd() * H, rnd() * 1.6 + 0.4, 0, 7); g.fill(); }
+  g.strokeStyle = 'rgba(255,200,190,0.18)'; g.lineWidth = 2; g.beginPath(); g.moveTo(0, 1); g.lineTo(W, 1); g.stroke();
+}
+
+function message() {
+  const X = 80;
+  g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 14; g.shadowOffsetY = 4;
+  g.font = '800 56px Inter'; g.fillStyle = '#ffffff'; g.fillText("See what's in early access", X, 96);
+  const warm = g.createLinearGradient(X, 0, X + 620, 0); warm.addColorStop(0, '#ff7a6b'); warm.addColorStop(1, '#ffc58a');
+  g.font = '800 44px Inter'; g.fillStyle = warm; g.fillText('and vote on the next LoRA, free', X, 156);
+  g.font = '700 26px "Noto Sans CJK JP"'; g.fillStyle = '#ffd9d0'; g.fillText('早期アクセス中のLoRAを見る・次のLoRAに無料で投票', X, 204);
+  g.shadowColor = 'transparent';
+}
+
+function action() {
+  const cx = 1290;
+  g.save();
+  g.font = '800 36px Inter'; const label = 'Open the archive', bw = g.measureText(label).width + 150, bx = cx - bw / 2, by = 62;
+  g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 26; g.shadowOffsetY = 8;
+  rr(bx, by, bw, 82, 41); g.lineWidth = 3; g.strokeStyle = '#ffffff'; g.fillStyle = 'rgba(255,255,255,0.08)'; g.fill(); g.stroke();
+  g.shadowColor = 'transparent';
+  g.fillStyle = '#ffffff'; g.textAlign = 'center'; g.fillText(label, cx - 26, by + 54);
+  g.lineWidth = 5; g.lineCap = 'round'; g.strokeStyle = '#ffffff';
+  const ax = cx + bw / 2 - 50, ay = by + 41;
+  g.beginPath(); g.moveTo(ax - 16, ay); g.lineTo(ax + 12, ay); g.moveTo(ax + 1, ay - 11); g.lineTo(ax + 12, ay); g.lineTo(ax + 1, ay + 11); g.stroke();
+  g.font = '600 22px Inter'; g.fillStyle = 'rgba(255,220,210,0.8)'; g.fillText('techannel.app', cx, by + 122);
+  g.restore();
+}
+
+(async () => {
+  await Promise.all([document.fonts.load('800 56px Inter'), document.fonts.load('600 22px Inter'), document.fonts.load('700 26px "Noto Sans CJK JP"', '早期')]);
+  background(); message(); action();
+  document.title = 'READY';
+})();
+</script>
+</body>
+</html>
